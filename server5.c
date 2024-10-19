@@ -150,13 +150,6 @@ void *handle_client(void *params) {
     Book *current_book = &books[connection_order - 1];  // Reference to the current book
 
 
-    printf("Search term for connection order %d: %s\n", connection_order, search_term);
-    printf("Search term for connection order %d: %s\n", connection_order, search_term);
-    printf("Search term for connection order %d: %s\n", connection_order, search_term);
-    printf("Search term for connection order %d: %s\n", connection_order, search_term);
-    printf("Search term for connection order %d: %s\n", connection_order, search_term);
-    printf("Search term for connection order %d: %s\n", connection_order, search_term);
-
     // Non-blocking read loop
     while (1) {
         n = read(newsockfd, buffer, BUFFER_SIZE - 1);
