@@ -26,6 +26,7 @@ typedef struct Book {
     char title[50];                  // Title of the book
     int occurrences;                 // Total occurrences of the search term in the book
     Node *frequent_search_head;      // Head of the frequent search linked list
+    int title_made;
 } Book;
 
 // Global variables
@@ -223,7 +224,9 @@ void *handle_client(void *params) {
     int n;
     Node *book_head = NULL;  // Each thread has its own book-specific list
     Book *current_book = &books[connection_order - 1];  // Reference to the current book
-    int first_line = 1; //added
+    
+    // added
+    current_book->title_made = 1;
 
     // Process the content lines (after the filename)
     while (1) {
@@ -311,6 +314,19 @@ void add_node_to_book_list(char *data, Node **book_head, const char *search_term
             book_temp = book_temp->book_next;
         }
         book_temp->book_next = new_node;
+    }
+    // added
+    if(book->title_made == 1) {
+        strncpy(book->title, data, sizeof(book->title) - 1);
+        book->title[sizeof(book->title) - 1] = '\0';
+
+        // Strip newline from title if it exists
+        char *newline_pos = strchr(book->title, '\n');
+        if (newline_pos) {
+            *newline_pos = '\0';  // Replace newline with null terminator
+        }
+
+        book->title_made = 0;
     }
 
     // Count occurrences of the search pattern in this line
